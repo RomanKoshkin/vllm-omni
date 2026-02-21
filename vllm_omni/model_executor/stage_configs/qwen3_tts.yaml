@@ -3,7 +3,7 @@ stage_args:
     stage_type: llm  # Use llm stage type to launch OmniLLM
     runtime:
       devices: "0"
-      max_batch_size: 100
+      max_batch_size: 10
     engine_args:
       model_stage: qwen3_tts
       model_arch: Qwen3TTSForConditionalGeneration
@@ -11,7 +11,7 @@ stage_args:
       scheduler_cls: vllm_omni.core.sched.omni_generation_scheduler.OmniGenerationScheduler
       enforce_eager: true
       trust_remote_code: true
-      async_scheduling: false
+      async_scheduling: true
       enable_prefix_caching: false
       engine_output_type: audio  # Final output: audio waveform
       gpu_memory_utilization: 0.8

@@ -1,14 +1,15 @@
 import os
 from typing import NamedTuple
+
 import soundfile as sf
-from typing import List
-from datasets import Dataset, DatasetDict
+from datasets import DatasetDict
 
 os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
 
 from vllm import SamplingParams
-from vllm.utils.argparse_utils import FlexibleArgumentParser
+
 from vllm_omni import Omni
+
 
 class QueryResult(NamedTuple):
     """Container for a prepared Omni request."""
@@ -16,17 +17,17 @@ class QueryResult(NamedTuple):
     inputs: dict
     model_name: str
 
+
 # new
 def get_base_query(
-    ref_audios: List[str],
-    ref_texts: List[str],
-    target_texts: List[str],
-    target_langs: List[str],
+    ref_audios: list[str],
+    ref_texts: list[str],
+    target_texts: list[str],
+    target_langs: list[str],
 ):
-    
     inputs = []
     for target_text, target_lang, ref_audio, ref_text in zip(
-        target_texts, 
+        target_texts,
         target_langs,
         ref_audios,
         ref_texts,
@@ -47,14 +48,14 @@ def get_base_query(
                 },
             }
         )
-    
+
     return QueryResult(
         inputs=inputs,
         model_name="Qwen/Qwen3-TTS-12Hz-1.7B-Base",
     )
 
-def main():
 
+def main():
     omni = Omni(
         model="Qwen/Qwen3-TTS-12Hz-1.7B-Base",
         stage_configs_path="/lustre/users/rkoshkin/vllm-omni/vllm_omni/model_executor/stage_configs/qwen3_tts.yaml",
@@ -62,14 +63,13 @@ def main():
         stage_ibnit_timeout=300,
     )
 
-    ds = DatasetDict.load_from_disk("/lustre/users/rkoshkin/s2st/data/s2s/podcast_crawl-enru-dd-full-s2s+sid/")['train']
-    target_texts = [ds[0]['src_sent'][i] for i in range(80)]
+    ds = DatasetDict.load_from_disk("/lustre/users/rkoshkin/s2st/data/s2s/podcast_crawl-enru-dd-full-s2s+sid/")["train"]
+    target_texts = [ds[0]["src_sent"][i] for i in range(80)]
     ref_audios = ["/lustre/users/rkoshkin/s2st/assets/ru_ref.sample.wav"] * len(target_texts)
     ref_texts = [
         "Привет! С вами Программный Комитет - шоу подкаст-студии Термин-Вокс и IT-конфереции Стачка. Меня зовут Сергей Пихин.В этом подкасте мы обсуждаем главные тренды в IT-индустрии и в смежных областях. Помогают нам в этом топовые эксперты, которые делятся своими знаниями и экспертизой.",
     ] * len(target_texts)
     target_langs = ["English"] * len(target_texts)
-
 
     query_result = get_base_query(ref_audios, ref_texts, target_texts, target_langs)
 
@@ -108,6 +108,7 @@ def main():
             # Save audio file with explicit WAV format
             sf.write(output_wav, audio_numpy, samplerate=audio_samplerate, format="WAV")
             print(f"Request ID: {request_id}, Saved audio to {output_wav}")
+
 
 if __name__ == "__main__":
     main()

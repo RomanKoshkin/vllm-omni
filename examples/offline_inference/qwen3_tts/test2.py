@@ -16,6 +16,7 @@ class QueryResult(NamedTuple):
     inputs: dict
     model_name: str
 
+
 # new
 def get_base_query(
     ref_audios: list[str],
@@ -23,7 +24,6 @@ def get_base_query(
     target_texts: list[str],
     target_langs: list[str],
 ):
-
     inputs = []
     for target_text, target_lang, ref_audio, ref_text in zip(
         target_texts,
@@ -53,8 +53,8 @@ def get_base_query(
         model_name="Qwen/Qwen3-TTS-12Hz-1.7B-Base",
     )
 
-def main():
 
+def main():
     omni = Omni(
         model="Qwen/Qwen3-TTS-12Hz-1.7B-Base",
         stage_configs_path="/lustre/users/rkoshkin/vllm-omni/vllm_omni/model_executor/stage_configs/qwen3_tts.yaml",
@@ -62,27 +62,27 @@ def main():
         stage_ibnit_timeout=300,
     )
 
-
     target_texts = [
-        'Welcome to another episode of Out of the Pods.',
+        "Welcome to another episode of Out of the Pods.",
         "I'm Deep T. And I'm Natalie.",
-        'And happy Wednesday.',
-        'You know, we said last week that this episode is going to be about our recap of Perfect Match Season 2, Episodes 1 through 6, which we will get into.',
-        'Lots of thoughts.',
-        'Actually, almost no thoughts because...',
-        'This is not a great season.',
+        "And happy Wednesday.",
+        "You know, we said last week that this episode is going to be about our recap of Perfect Match Season 2, Episodes 1 through 6, which we will get into.",
+        "Lots of thoughts.",
+        "Actually, almost no thoughts because...",
+        "This is not a great season.",
         "It's just not off to a good start.",
-        'I feel like I lost some brain cells watching it.',
-        'Oh, 100%.'
+        "I feel like I lost some brain cells watching it.",
+        "Oh, 100%.",
     ]
     # ref_audios = ["https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen3-TTS-Repo/clone_2.wav"] * len(target_texts)
     # ref_texts = [
     #     "Okay. Yeah. I resent you. I love you. I respect you. But you know what? You blew it! And thanks to you.",
     # ] * len(target_texts)
     ref_audios = ["/lustre/users/rkoshkin/s2st/bak/trump.mp3"] * len(target_texts)
-    ref_texts = ["because of it. Look, we were ripped off by almost every country in the world. If you look at the surpluses, almost every country in the world that did business with us, our people were stupid. And I blame presidents for it because they're ultimately the leader. Uh we were being ripped off by almost every single country in the world had massive some massive surpluses. China had hundreds of billions of dollars in surpluses with the United States. They rebuilt China. They rebuilt the army. We built China's army by allowing that to happen. I have a great relationship with President Xi, but he respects our country now. Now, what we've done, I charged China a 20% tariff as a penalty for sending fentinol in. And that was 20 times more than they could make by selling fentanol."] * len(target_texts)
+    ref_texts = [
+        "because of it. Look, we were ripped off by almost every country in the world. If you look at the surpluses, almost every country in the world that did business with us, our people were stupid. And I blame presidents for it because they're ultimately the leader. Uh we were being ripped off by almost every single country in the world had massive some massive surpluses. China had hundreds of billions of dollars in surpluses with the United States. They rebuilt China. They rebuilt the army. We built China's army by allowing that to happen. I have a great relationship with President Xi, but he respects our country now. Now, what we've done, I charged China a 20% tariff as a penalty for sending fentinol in. And that was 20 times more than they could make by selling fentanol."
+    ] * len(target_texts)
     target_langs = ["English"] * len(target_texts)
-
 
     query_result = get_base_query(ref_audios, ref_texts, target_texts, target_langs)
 
@@ -121,6 +121,7 @@ def main():
             # Save audio file with explicit WAV format
             sf.write(output_wav, audio_numpy, samplerate=audio_samplerate, format="WAV")
             print(f"Request ID: {request_id}, Saved audio to {output_wav}")
+
 
 if __name__ == "__main__":
     main()

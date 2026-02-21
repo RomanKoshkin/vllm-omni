@@ -16,10 +16,15 @@ cd ../vllm-omni
 uv pip install -e .
 ```
 
-
+# Examples
 
 ```bash
 # edit /lustre/users/rkoshkin/vllm-omni/vllm_omni/model_executor/stage_configs/qwen3_tts.yaml AS NECESSARY
 cd examples/online_serving/qwen3_tts
 ./run_server.sh Base
 ```
+
+More online and offline inference examples are in
+
+`/lustre/users/rkoshkin/vllm-omni/examples/online_serving/qwen3_tts/Examples.ipynb`
+
