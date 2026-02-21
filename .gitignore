@@ -245,3 +245,5 @@ tmp_test
 
 # output files
 *.wav
+examples/offline_inference/qwen3_tts/test.py
+examples/online_serving/qwen3_tts/Untitled.ipynb

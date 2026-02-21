@@ -35,10 +35,16 @@ def get_custom_voice_query(use_batch_sample: bool = False) -> QueryResult:
     """
     task_type = "CustomVoice"
     if use_batch_sample:
-        texts = ["其实我真的有发现，我是一个特别善于观察别人情绪的人。", "She said she would be here by noon."]
-        instructs = ["", "Very happy."]
-        languages = ["Chinese", "English"]
-        speakers = ["Vivian", "Ryan"]
+        texts = [
+            "其实我真的有发现，我是一个特别善于观察别人情绪的人。",
+            "She said she would be here by noon.",
+            "I like you very much.",
+            "Really, you do?",
+            "Yes, absolutely.",
+        ]
+        instructs = ["", "Very happy.", "Very happy.", "Very happy.", "Very happy."]
+        languages = ["Chinese", "English", "English", "English", "English"]
+        speakers = ["Vivian", "Ryan", "Ryan", "Ryan", "Ryan"]
         inputs = []
         for text, instruct, language, speaker in zip(texts, instructs, languages, speakers):
             prompt = f"<|im_start|>assistant\n{text}<|im_end|>\n<|im_start|>assistant\n"
